@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
 
-    <title><?php echo $language["Login"]; ?> | Symox - Admin & Dashboard Template</title>
+    <title><?php echo $language["Login"]; ?> | APOTIK GRAHA MEDIKA</title>
 
     <?php include 'layouts/head.php'; ?>
 
@@ -121,14 +121,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="mb-3 <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                                         <label class="form-label" for="username">Username</label>
                                         <input type="text" class="form-control" id="username" name="username"
-                                            placeholder="Enter username" value="Henry">
+                                            placeholder="Masukkan Username">
                                         <span class="text-danger"><?php echo $username_err; ?></span>
                                     </div>
 
                                     <div class="mb-3 <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                                         <label class="form-label" for="userpassword">Password</label>
                                         <input type="password" class="form-control" id="userpassword" name="password"
-                                            value="123456" placeholder="Enter password">
+                                            placeholder="Masukkan Password">
                                         <span class="text-danger"><?php echo $password_err; ?></span>
                                     </div>
 

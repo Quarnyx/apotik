@@ -15,7 +15,7 @@
     <tbody>
         <?php
         include "../../config.php";
-        $query = mysqli_query(mysql: $conn, query: "SELECT * FROM v_pembelian");
+        $query = mysqli_query($conn, query: "SELECT * FROM v_pembelian");
         while ($data = mysqli_fetch_array($query)) {
             ?>
             <tr>

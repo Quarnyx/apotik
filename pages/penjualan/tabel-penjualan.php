@@ -14,7 +14,7 @@
     <tbody>
         <?php
         include "../../config.php";
-        $query = mysqli_query(mysql: $conn, query: "SELECT * FROM v_penjualan");
+        $query = mysqli_query($conn, query: "SELECT * FROM v_penjualan");
         while ($data = mysqli_fetch_array($query)) {
             ?>
             <tr>

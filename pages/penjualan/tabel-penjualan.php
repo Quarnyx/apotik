@@ -7,6 +7,7 @@
             <th>Tgl. Transaksi</th>
             <th>Harga Jual</th>
             <th>Qty</th>
+            <th>Satuan</th>
             <th>Total</th>
             <th>Aksi</th>
         </tr>
@@ -24,6 +25,7 @@
                 <td><?= $data['tanggal_penjualan'] ?></td>
                 <td>Rp. <?= number_format($data['harga_jual'], 0, ',', '.') ?></td>
                 <td><?= $data['jumlah'] ?></td>
+                <td><?= $data['satuan'] ?></td>
                 <td>Rp. <?= number_format($data['harga_jual'] * $data['jumlah'], 0, ',', '.') ?></td>
                 <td>
                     <button data-id="<?= $data['id_penjualan'] ?>" data-kodetransaksi="<?= $data['kode_penjualan'] ?>"

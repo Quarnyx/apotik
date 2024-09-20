@@ -8,14 +8,23 @@
     $char = "PRD-";
     $kode = $char . sprintf("%03s", $no);
     ?>
-    <div class="col-lg-6">
-        <div class="mb-3">
-            <label class="form-label">Kode Produk</label>
-            <input type="text" name="kode_produk" class="form-control" placeholder="Jumlah Transaksi"
-                value="<?= $kode; ?>" readonly>
-        </div>
-    </div>
+
     <div class="d-grid gap-3">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label class="form-label">Kode Produk</label>
+                    <input type="text" name="kode_produk" class="form-control" placeholder="Jumlah Transaksi"
+                        value="<?= $kode; ?>" readonly>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label class="form-label">Satuan Produk</label>
+                    <input type="text" name="satuan" class="form-control" placeholder="Satuan">
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <div>

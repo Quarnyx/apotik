@@ -8,14 +8,24 @@ if ($result->num_rows > 0) {
 ?>
 <form id="form-edit" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<?= $row['id_produk'] ?>">
-    <div class="col-lg-6">
-        <div class="mb-3">
-            <label class="form-label">Kode Produk</label>
-            <input type="text" name="kode_produk" class="form-control" placeholder="Jumlah Transaksi"
-                value="<?= $row['kode_produk']; ?>" readonly>
-        </div>
-    </div>
+
     <div class="d-grid gap-3">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label class="form-label">Kode Produk</label>
+                    <input type="text" name="kode_produk" class="form-control" placeholder="Jumlah Transaksi"
+                        value="<?= $row['kode_produk']; ?>" readonly>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label class="form-label">Satuan Produk</label>
+                    <input type="text" name="satuan" class="form-control" placeholder="Satuan"
+                        value="<?= $row['satuan'] ?>">
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <div>

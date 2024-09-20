@@ -8,6 +8,7 @@
             <th>Tgl. Kadaluarsa</th>
             <th>Harga Beli</th>
             <th>Qty</th>
+            <th>Satuan</th>
             <th>Total</th>
             <th>Aksi</th>
         </tr>
@@ -26,6 +27,7 @@
                 <td><?= $data['tanggal_kadaluarsa'] ?></td>
                 <td>Rp. <?= number_format($data['harga_beli'], 0, ',', '.') ?></td>
                 <td><?= $data['jumlah'] ?></td>
+                <td><?= $data['satuan'] ?></td>
                 <td>Rp. <?= number_format($data['harga_beli'] * $data['jumlah'], 0, ',', '.') ?></td>
                 <td>
                     <button data-id="<?= $data['id_produk'] ?>" data-kodetransaksi="<?= $data['kode_pembelian'] ?>"

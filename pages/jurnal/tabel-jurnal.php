@@ -44,9 +44,6 @@ require_once '../../config.php';
 if (isset($_GET['bulan'])) {
     $sql = mysqli_query($conn, "SELECT sum(debit) AS debit FROM jurnal WHERE MONTH(tanggal_transaksi) = '$_GET[bulan]'");
     $debit = mysqli_fetch_array($sql);
-    $bulansebelumnya = $_GET['bulan'] - 1;
-    $sqlbulan = mysqli_query($conn, "SELECT sum(debit) AS debit FROM jurnal WHERE MONTH(tanggal_transaksi) = '$bulansebelumnya'");
-    $debitbulanan = mysqli_fetch_array($sqlbulan);
 } else {
     $sql = mysqli_query($conn, "SELECT sum(debit) AS debit FROM jurnal");
     $debit = mysqli_fetch_array($sql);
@@ -96,10 +93,6 @@ if (!empty($debit['debit'])) {
                                 if (isset($_GET['bulan'])) {
                                     $sql = mysqli_query($conn, "SELECT sum(kredit) AS kredit FROM jurnal WHERE MONTH(tanggal_transaksi) = '$_GET[bulan]'");
                                     $kredit = mysqli_fetch_array($sql);
-                                    // bulan sebelumnya
-                                    $bulansebelumnya = $_GET['bulan'] - 1;
-                                    $sqlbulan = mysqli_query($conn, "SELECT sum(kredit) AS kredit FROM jurnal WHERE MONTH(tanggal_transaksi) = '$bulansebelumnya'");
-                                    $kreditbulanan = mysqli_fetch_array($sqlbulan);
                                 } else {
                                     $sql = mysqli_query($conn, "SELECT sum(kredit) AS kredit FROM jurnal");
                                     $kredit = mysqli_fetch_array($sql);

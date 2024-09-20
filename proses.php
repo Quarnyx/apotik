@@ -260,8 +260,9 @@ switch ($_GET['aksi'] ?? '') {
         $kode_produk = $_POST['kode_produk'];
         $harga_beli = $_POST['harga_beli'];
         $harga_jual = $_POST['harga_jual'];
-        $sql = "INSERT INTO produk (nama_produk, kode_produk, deskripsi, harga_beli, harga_jual) VALUES ('$nama_produk',
-'$kode_produk', '$deskripsi', '$harga_beli', '$harga_jual')";
+        $satuan = $_POST['satuan'];
+        $sql = "INSERT INTO produk (nama_produk, kode_produk, deskripsi, harga_beli, harga_jual, satuan) VALUES ('$nama_produk',
+'$kode_produk', '$deskripsi', '$harga_beli', '$harga_jual', '$satuan')";
         $result = $conn->query($sql);
         if ($result) {
             echo 'ok';
@@ -278,8 +279,9 @@ switch ($_GET['aksi'] ?? '') {
         $deskripsi = $_POST['deskripsi'];
         $harga_beli = $_POST['harga_beli'];
         $harga_jual = $_POST['harga_jual'];
+        $satuan = $_POST['satuan'];
         $sql = "UPDATE produk SET nama_produk = '$nama_produk', deskripsi = '$deskripsi', harga_beli = '$harga_beli', harga_jual
-= '$harga_jual' WHERE id_produk = '$id'";
+= '$harga_jual', satuan = '$satuan' WHERE id_produk = '$id'";
         $result = $conn->query($sql);
         if ($result) {
             echo 'ok';

@@ -71,6 +71,10 @@
                         </div>
                         <div class="col-12">
                             <button class="btn btn-primary" type="submit">Pilih</button>
+                            <?php if (isset($_GET['bulan'])) { ?>
+                                <a target="_blank" href="pages/jurnal/cetak-jurnal.php?bulan=<?= $_GET['bulan'] ?> ?>"
+                                    class="btn btn-success">Cetak</a>
+                            <?php } ?>
                         </div>
                     </form>
                 </div> <!-- end card-body -->

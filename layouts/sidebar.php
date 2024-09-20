@@ -40,7 +40,7 @@
                         <span class="menu-item" data-key="t-dashboards">Dashboard</span>
                     </a>
                 </li>
-                <?php if ($_SESSION['level'] == 'admin') { ?>
+                <?php if ($_SESSION['level'] == 'karyawan') { ?>
                     <li class="menu-title" data-key="t-applications">Data Master</li>
 
                     <li>
@@ -63,6 +63,11 @@
                         </a>
                     </li>
 
+                    <?php
+                } ?>
+                <?php
+                if ($_SESSION['level'] == 'admin') {
+                    ?>
                     <li>
                         <a href="?page=pengguna">
                             <i class="bx bx-user icon nav-icon"></i>

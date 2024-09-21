@@ -22,12 +22,13 @@
                 <td><?= $row['nama_akun'] ?></td>
                 <td><?= $row['jenis_akun'] ?></td>
                 <td>
+
+                    <button id="edit" data-nama="<?= $row['nama_akun'] ?>" data-id="<?= $row['id_akun'] ?>"
+                        class="btn btn-primary btn-sm">Edit</button>
                     <?php
                     if ($row['wajib'] != 1) { {
                         }
                         ?>
-                        <button id="edit" data-nama="<?= $row['nama_akun'] ?>" data-id="<?= $row['id_akun'] ?>"
-                            class="btn btn-primary btn-sm">Edit</button>
                         <button id="delete" data-nama="<?= $row['nama_akun'] ?>" data-id="<?= $row['id_akun'] ?>"
                             class="btn btn-danger btn-sm">Hapus</button>
                     <?php } ?>

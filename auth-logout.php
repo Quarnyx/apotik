@@ -22,8 +22,8 @@
 
                     <div class="text-center mb-4">
                         <a href="index.php">
-                            <img src="assets/images/logo-sm.svg" alt="" height="22"> <span
-                                class="logo-txt">Apotik</span>
+                            <img src="assets/images/logo-sm.png" alt="" height="22"> <span class="logo-txt">Graha
+                                Medika</span>
                         </a>
                     </div>
 

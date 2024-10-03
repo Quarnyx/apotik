@@ -25,7 +25,7 @@
                 function bulan($inputbulan)
                 {
                     $bulan = array(
-                        1 => 'Januari',
+                        01 => 'Januari',
                         'Februari',
                         'Maret',
                         'April',
@@ -38,7 +38,7 @@
                         'November',
                         'Desember'
                     );
-                    return $bulan[(int) $inputbulan[1]];
+                    return $bulan[(int) $inputbulan];
                 }
                 if (isset($_GET['bulan'])) {
                     $titlebulan = bulan($_GET['bulan']);

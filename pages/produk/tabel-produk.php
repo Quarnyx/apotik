@@ -28,6 +28,8 @@
                 <td><?= 'Rp. ' . number_format($row['harga_beli'], 0, ',', '.') ?></td>
                 <td><?= 'Rp. ' . number_format($row['harga_jual'], 0, ',', '.') ?></td>
                 <td>
+                    <button id="lihat-gambar" data-nama="<?= $row['nama_produk'] ?>" data-id="<?= $row['id_produk'] ?>"
+                        class="btn btn-primary btn-sm">Lihat Gambar</button>
                     <button id="edit" data-nama="<?= $row['nama_produk'] ?>" data-id="<?= $row['id_produk'] ?>"
                         class="btn btn-primary btn-sm">Edit</button>
                     <button id="delete" data-nama="<?= $row['nama_produk'] ?>" data-id="<?= $row['id_produk'] ?>"
@@ -83,6 +85,20 @@
                 })
             }, function () {
                 alertify.error('Hapus dibatalkan');
+            })
+        });
+        $('#table-data').on('click', '#lihat-gambar', function () {
+            const id = $(this).data('id');
+            const nama = $(this).data('nama');
+            $.ajax({
+                type: 'POST',
+                url: 'pages/produk/lihat-gambar.php',
+                data: 'id=' + id + '&nama=' + nama,
+                success: function (data) {
+                    $('.modal').modal('show');
+                    $('.modal-title').html('Lihat Gambar ' + nama);
+                    $('.modal .modal-body').html(data);
+                }
             })
         });
     });

@@ -3,8 +3,8 @@
         <tr>
             <th>#</th>
             <th>Kode Akun</th>
-            <th>Nama Akun</th>
             <th>Jenis Akun</th>
+            <th>Nama Akun</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -19,8 +19,8 @@
             <tr>
                 <td><?= $no++ ?></td>
                 <td><?= $row['kode_akun'] ?></td>
-                <td><?= $row['nama_akun'] ?></td>
                 <td><?= $row['jenis_akun'] ?></td>
+                <td><?= $row['nama_akun'] ?></td>
                 <td>
 
                     <button id="edit" data-nama="<?= $row['nama_akun'] ?>" data-id="<?= $row['id_akun'] ?>"

@@ -21,8 +21,12 @@ if ($result->num_rows > 0) {
             <div class="col-lg-6">
                 <div class="mb-3">
                     <label class="form-label">Satuan Produk</label>
-                    <input type="text" name="satuan" class="form-control" placeholder="Satuan"
-                        value="<?= $row['satuan'] ?>">
+                    <select class="form-select" name="satuan">
+                        <option selected>Pilih Satuan</option>
+                        <option value="PCS" <?= ($row['satuan'] == 'PCS' ? 'selected' : '') ?>>PCS</option>
+                        <option value="Botolan" <?= ($row['satuan'] == 'Botolan' ? 'selected' : '') ?>>Botolan</option>
+                        <option value="Kapsul" <?= ($row['satuan'] == 'Kapsul' ? 'selected' : '') ?>>Kapsul</option>
+                    </select>
                 </div>
             </div>
         </div>

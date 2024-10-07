@@ -4,6 +4,7 @@
     <?php
     $maintitle = "Symox";
     $title = 'Welcome !';
+    include 'config.php';
     ?>
     <?php include 'layouts/breadcrumb.php'; ?>
     <!-- end page title -->
@@ -26,17 +27,7 @@
                             <li><i class="bx bx-polygon font-size-24"></i></li>
                         </ul>
                         <div class="main-wid position-relative">
-                            <h3 class="text-white">Dashboard Apotik</h3>
-
-                            <h3 class="text-white mb-0">Selamat datang,
-                                <?php echo $_SESSION['username'];
-                                include 'config.php'; ?>
-                            </h3>
-
-                            <div class="mt-4 pt-2 mb-2">
-                                <a href="?page=pengguna" class="btn btn-success">Data Pengguna<i
-                                        class="mdi mdi-arrow-right ms-1"></i></a>
-                            </div>
+                            <h3 class="text-white">APOTIK GRAHA MEDIKA</h3>
                         </div>
                     </div>
                 </div>

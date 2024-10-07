@@ -214,7 +214,8 @@ switch ($_GET['aksi'] ?? '') {
     case 'tambah-supplier':
         $nama_supplier = $_POST['nama_supplier'];
         $kontak_supplier = $_POST['kontak'];
-        $sql = "INSERT INTO supplier (nama_supplier, kontak_supplier) VALUES ('$nama_supplier', '$kontak_supplier')";
+        $alammat = $_POST['alamat'];
+        $sql = "INSERT INTO supplier (nama_supplier, kontak_supplier, alamat) VALUES ('$nama_supplier', '$kontak_supplier', '$alammat')";
         $result = $conn->query($sql);
         if ($result) {
             echo 'ok';
@@ -229,7 +230,8 @@ switch ($_GET['aksi'] ?? '') {
         $id = $_POST['id'];
         $nama_supplier = $_POST['nama_supplier'];
         $kontak_supplier = $_POST['kontak'];
-        $sql = "UPDATE supplier SET nama_supplier = '$nama_supplier', kontak_supplier = '$kontak_supplier' WHERE id_supplier =
+        $alammat = $_POST['alamat'];
+        $sql = "UPDATE supplier SET alamat = '$alammat', nama_supplier = '$nama_supplier', kontak_supplier = '$kontak_supplier' WHERE id_supplier =
 '$id'";
         $result = $conn->query($sql);
         if ($result) {
@@ -261,8 +263,13 @@ switch ($_GET['aksi'] ?? '') {
         $harga_beli = $_POST['harga_beli'];
         $harga_jual = $_POST['harga_jual'];
         $satuan = $_POST['satuan'];
-        $sql = "INSERT INTO produk (nama_produk, kode_produk, deskripsi, harga_beli, harga_jual, satuan) VALUES ('$nama_produk',
-'$kode_produk', '$deskripsi', '$harga_beli', '$harga_jual', '$satuan')";
+        $foto = $_FILES['foto']['name'];
+        $tmp = $_FILES['foto']['tmp_name'];
+        $path = 'assets/images/product/' . $foto;
+        move_uploaded_file($tmp, $path);
+
+        $sql = "INSERT INTO produk (nama_produk, kode_produk, deskripsi, harga_beli, harga_jual, satuan, foto) VALUES ('$nama_produk',
+'$kode_produk', '$deskripsi', '$harga_beli', '$harga_jual', '$satuan', '$path')";
         $result = $conn->query($sql);
         if ($result) {
             echo 'ok';
@@ -290,6 +297,22 @@ switch ($_GET['aksi'] ?? '') {
             echo 'error';
             echo $conn->error;
             http_response_code(400);
+        }
+        break;
+    case 'edit-foto-produk':
+        $id = $_POST['id'];
+        $foto = $_FILES['foto']['name'];
+        $tmp = $_FILES['foto']['tmp_name'];
+        $path = 'assets/images/product/' . $foto;
+        move_uploaded_file($tmp, $path);
+        $sql = "UPDATE produk SET foto = '$path' WHERE id_produk = '$id'";
+        $result = $conn->query($sql);
+        if ($result) {
+            echo 'ok';
+            http_response_code(200);
+        } else {
+            echo 'error';
+            echo $conn->error;
         }
         break;
     case 'hapus-produk':

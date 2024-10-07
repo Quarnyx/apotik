@@ -1,12 +1,18 @@
 <form id="tambah-supplier" enctype="multipart/form-data">
-    <div class="d-grid gap-3">
-        <div>
+    <div class="row">
+        <div class="col-md-6">
             <label for="nama" class="form-label">Name Supplier</label>
             <input type="text" class="form-control" name="nama_supplier" id="nama" placeholder="Nama">
         </div>
-        <div>
+        <div class="col-md-6">
             <label for="kontak" class="form-label">Kontak</label>
             <input type="text" class="form-control" name="kontak" id="kontak" placeholder="Kontak">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md 12">
+            <label for="alamat" class="form-label">Alamat</label>
+            <textarea class="form-control" name="alamat" id="" cols="10" rows="5"></textarea>
         </div>
     </div>
     <button type="submit" class="btn btn-primary mt-3">SImpan</button>

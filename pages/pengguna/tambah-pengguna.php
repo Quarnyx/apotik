@@ -15,13 +15,13 @@
         <div>
             <label for="level" class="form-label">Level</label>
             <select class="form-select" name="level" id="level">
-                <option value="admin">Admin</option>
-                <option value="karyawan">Karyawan</option>
-
+                <option value="Admin">Admin</option>
+                <option value="Kasir">Kasir</option>
+                <option value="Pimpinan">Pimpinan</option>
             </select>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary mt-3">SImpan</button>
+    <button type="submit" class="btn btn-primary mt-3">Simpan</button>
 </form>
 <script>
     $("#tambah-pengguna").submit(function (e) {

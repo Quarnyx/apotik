@@ -22,10 +22,12 @@ if ($result->num_rows > 0) {
         <div>
             <label for="level" class="form-label">Level</label>
             <select class="form-select" name="level" id="level">
-                <option value="admin" <?php if ($row['level'] == 'admin')
+                <option value="Admin" <?php if ($row['level'] == 'Admin')
                     echo 'selected' ?>>Admin</option>
-                    <option value="karyawan" <?php if ($row['level'] == 'karyawan')
-                    echo 'selected' ?>>Karyawan</option>
+                    <option value="Kasir" <?php if ($row['level'] == 'Kasir')
+                    echo 'selected' ?>>Kasir</option>
+                    <option value="Pimpinan" <?php if ($row['level'] == 'Pimpinan')
+                    echo 'selected' ?>>Pimpinan</option>
                 </select>
             </div>
         </div>

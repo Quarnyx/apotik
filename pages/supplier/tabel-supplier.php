@@ -4,6 +4,7 @@
             <th>#</th>
             <th>Supplier</th>
             <th>Kontak</th>
+            <th>Alamat</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -19,6 +20,7 @@
                 <td><?= $no++ ?></td>
                 <td><?= $row['nama_supplier'] ?></td>
                 <td><?= $row['kontak_supplier'] ?></td>
+                <td><?= $row['alamat'] ?></td>
                 <td>
                     <button id="edit" data-nama="<?= $row['nama_supplier'] ?>" data-id="<?= $row['id_supplier'] ?>"
                         class="btn btn-primary btn-sm">Edit</button>

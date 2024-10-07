@@ -112,7 +112,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="card">
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
-                                <h5 class="text-primary">Selamat Datang !</h5>
+                                <img src="assets/images/logo-sm.png" alt="" height="100" class="auth-logo-dark mx-auto">
+                                <h3 class="mt-3 text-uppercase">APOTIK GRAHA MEDIKA</h3>
+                                <p class="text-muted">Jl. Lkr. Barat Ps. Kendal pasar No.5 Blok H, Pekauman, Pakauman,
+                                    Kec. Kendal, Kabupaten Kendal, Jawa Tengah 51314</p>
+
+                                <h5 class="mt-4 text-primary">Selamat Datang !</h5>
                                 <p class="text-muted">Login untuk melanjutkan.</p>
                             </div>
                             <div class="p-2 mt-4">

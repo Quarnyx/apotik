@@ -38,7 +38,7 @@
                                 <div class="mt-4 pt-2">
                                     <h5>Berhasil Logout</h5>
                                     <p class="text-muted font-size-15">Terima kasih <span
-                                            class="fw-semibold text-dark">Apotik</span></p>
+                                            class="fw-semibold text-dark"></span></p>
                                     <div class="mt-4">
                                         <a href="auth-login.php"
                                             class="btn btn-primary w-100 waves-effect waves-light">Log in</a>

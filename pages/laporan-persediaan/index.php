@@ -81,7 +81,7 @@
                 <div class="row mt-3">
                     <div class="col-sm-12 text-center">
                         <h6>Jl. Lkr. Barat Ps. Kendal pasar No.5 Blok H, Pekauman, Pakauman, Kec. Kendal, Kabupaten
-                            Kendal, Jawa Tengah 51314
+                            Kendal, Jawa Tengah 51314
                         </h6>
                     </div>
                 </div>

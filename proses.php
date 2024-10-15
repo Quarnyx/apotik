@@ -143,8 +143,6 @@ function deleteSale($id_penjualan, $conn)
     $stmt->bind_param("i", $id_penjualan);
     $stmt->execute();
     $stmt->close();
-
-    echo "Sale deleted and inventory restored!";
 }
 
 

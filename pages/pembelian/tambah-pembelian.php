@@ -37,12 +37,12 @@
         <div class="col-lg-6">
             <div class="mb-3">
                 <label for="simpleinput" class="form-label">Produk Obat</label>
-                <select class="form-select" name="id_produk" required>
+                <select class="form-select" name="id_produk" id="produk" required>
                     <?php
                     $sql = "SELECT * FROM produk";
                     $result = $conn->query($sql);
                     while ($row = $result->fetch_assoc()) {
-                        echo '<option value="' . $row['id_produk'] . '">' . $row['kode_produk'] . ' - ' . $row['nama_produk'] . '</option>';
+                        echo '<option data-hargabeli="' . $row['harga_beli'] . '" value="' . $row['id_produk'] . '">' . $row['kode_produk'] . ' - ' . $row['nama_produk'] . '</option>';
                     }
 
                     ?>
@@ -69,7 +69,7 @@
         <div class="col-lg-6">
             <div class="mb-3">
                 <label for="simpleinput" class="form-label">Harga Beli</label>
-                <input type="number" class="form-control" name="harga_beli" required>
+                <input type="number" class="form-control" name="harga_beli" id="harga_beli" required>
             </div>
         </div>
         <div class="col-lg-6">
@@ -123,6 +123,14 @@
 </form>
 
 <script>
+    $(document).ready(function () {
+        $('#produk').on('change', function () {
+            const id = $(this).val();
+            const hargabeli = $(this).find(':selected').data('hargabeli');
+            $('#harga_beli').val(hargabeli);
+        });
+
+    })
     $("#tambah-pembelian").submit(function (e) {
         e.preventDefault();
         var formData = new FormData(this);

@@ -15,7 +15,7 @@
     <tbody>
         <?php
         include "../../config.php";
-        $query = mysqli_query($conn, query: "SELECT * FROM v_penjualan");
+        $query = mysqli_query($conn, query: "SELECT * FROM v_penjualan ORDER BY `id_penjualan` DESC");
         while ($data = mysqli_fetch_array($query)) {
             ?>
             <tr>
@@ -40,7 +40,9 @@
 
 <script>
     $(document).ready(function () {
-        $('#tabel-data').DataTable();
+        $('#tabel-data').DataTable(
+            "ordering": false,
+        );
         $('#tabel-data').on('click', '#edit', function () {
             const id = $(this).data('id');
             $.ajax({

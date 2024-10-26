@@ -50,14 +50,28 @@
                 <input type="file" class="form-control" name="foto" id="fototak">
             </div>
             <div class="col-md-6">
-                <div>
-                    <label for="kontak" class="form-label">Harga Beli</label>
-                    <input type="text" class="form-control" name="harga_beli" id="harga_beli" placeholder="">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="kontak" class="form-label">Harga Beli</label>
+                            <input type="text" class="form-control" name="harga_beli" id="harga_beli" placeholder="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nama" class="form-label">Harga Jual</label>
+                            <input type="text" class="form-control" name="harga_jual" id="harga_jual" placeholder="">
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label for="nama" class="form-label">Harga Jual</label>
-                    <input type="text" class="form-control" name="harga_jual" id="harga_jual" placeholder="">
-                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="golongan_obat" class="form-label">Golongan Obat</label>
+                <select class="form-select" name="golongan_obat">
+                    <option selected>Pilih Golongan Obat</option>
+                    <option value="Obat Luar">Obat Luar</option>
+                    <option value="Obat Dalam">Obat Dalam</option>
+                </select>
             </div>
         </div>
 

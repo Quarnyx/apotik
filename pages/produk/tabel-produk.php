@@ -6,6 +6,7 @@
             <th>Nama Produk</th>
             <th>Deskripsi</th>
             <th>Satuan</th>
+            <th>Golongan Obat</th>
             <th>Harga Beli</th>
             <th>Harga Jual</th>
             <th>Aksi</th>
@@ -25,6 +26,7 @@
                 <td><?= $row['nama_produk'] ?></td>
                 <td><?= $row['deskripsi'] ?></td>
                 <td><?= $row['satuan'] ?></td>
+                <td><?= $row['golongan_obat'] ?></td>
                 <td><?= 'Rp. ' . number_format($row['harga_beli'], 0, ',', '.') ?></td>
                 <td><?= 'Rp. ' . number_format($row['harga_jual'], 0, ',', '.') ?></td>
                 <td>

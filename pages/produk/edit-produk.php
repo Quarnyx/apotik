@@ -50,23 +50,43 @@ if ($result->num_rows > 0) {
             <div class="col-md-6">
                 <div>
                     <label for="nama" class="form-label">Harga Jual</label>
-                    <input type="text" class="form-control" name="harga_jual" id="nama" placeholder=""
+                    <input type="text" class="form-control" name="harga_jual" id="harga_jual" placeholder=""
                         value="<?= $row['harga_jual'] ?>">
                 </div>
             </div>
             <div class="col-md-6">
                 <div>
                     <label for="kontak" class="form-label">Harga Beli</label>
-                    <input type="text" class="form-control" name="harga_beli" id="kontak" placeholder=""
+                    <input type="text" class="form-control" name="harga_beli" id="harga_beli" placeholder=""
                         value="<?= $row['harga_beli'] ?>">
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="golongan_obat" class="form-label">Golongan Obat</label>
+                <select class="form-select" name="golongan_obat">
+                    <option selected>Pilih Golongan Obat</option>
+                    <option value="Obat Luar" <?php if ($row['golongan_obat'] == 'Obat Luar')
+                        echo 'selected'; ?>>Obat
+                        Luar</option>
+                    <option value="Obat Dalam" <?php if ($row['golongan_obat'] == 'Obat Dalam')
+                        echo 'selected'; ?>>Obat
+                        Dalam</option>
+                </select>
+            </div>
+        </div>
 
     </div>
-    <button type="submit" class="btn btn-primary mt-3">SImpan</button>
+    <button type="submit" class="btn btn-primary mt-3">Simpan</button>
 </form>
 <script>
+    $("#harga_beli").on("keyup", function () {
+        var value = $(this).val();
+        $("#harga_jual").val(value);
+        // add 10% up 
+        $("#harga_jual").val(parseInt($("#harga_jual").val()) + (parseInt($("#harga_jual").val()) * 0.1))
+    })
     $("#form-edit").submit(function (e) {
         e.preventDefault();
         var formData = new FormData(this);

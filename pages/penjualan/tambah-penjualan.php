@@ -30,24 +30,35 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            <div class="mb-3">
-                <label for="simpleinput" class="form-label">Produk Obat</label>
-                <select id="produk" class="form-select" name="id_produk" required>
-                    <?php
-                    $sql = "SELECT * FROM produk";
-                    $result = $conn->query($sql);
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<option data-harga="' . $row['harga_jual'] . '" data-hargabeli="' . $row['harga_beli'] . '" value="' . $row['id_produk'] . '">' . $row['kode_produk'] . ' - ' . $row['nama_produk'] . '</option>';
-                    }
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="mb-3">
+                        <label for="simpleinput" class="form-label">Produk Obat</label>
+                        <select id="produk" class="form-select" name="id_produk" required>
+                            <?php
+                            $sql = "SELECT SUM(jumlah) AS stok, id_produk, nama_produk, kode_produk, harga_jual, harga_beli FROM v_inventory GROUP BY id_produk ORDER BY id_produk";
+                            $result = $conn->query($sql);
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option data-stok="' . $row['stok'] . '" data-harga="' . $row['harga_jual'] . '" data-hargabeli="' . $row['harga_beli'] . '" value="' . $row['id_produk'] . '">' . $row['kode_produk'] . ' - ' . $row['nama_produk'] . '</option>';
+                            }
 
-                    ?>
-                </select>
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label for="simpleinput" class="form-label">Stok</label>
+                        <input type="number" class="form-control" name="stok" id="stok" readonly required>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="col-lg-6">
             <div class="mb-3">
                 <label for="simpleinput" class="form-label">Jumlah Beli</label>
-                <input type="number" class="form-control" name="jumlah" required>
+                <input type="number" class="form-control" name="jumlah" id="jumlah_beli" required>
             </div>
         </div>
     </div>
@@ -82,8 +93,18 @@
             const id = $(this).val();
             const harga = $(this).find(':selected').data('harga');
             const hargabeli = $(this).find(':selected').data('hargabeli');
+            $('#stok').val($(this).find(':selected').data('stok'));
             $('#harga_beli').val(hargabeli);
             $('#harga').val(harga);
+        });
+
+        $('#jumlah_beli').on('change', function () {
+            const stok = $('#stok').val();
+            const jumlah = $('#jumlah_beli').val();
+            if (parseInt(jumlah) > parseInt(stok)) {
+                alertify.error('Stok Tidak Mencukupi');
+                $('#jumlah_beli').val('');
+            }
         });
 
     })

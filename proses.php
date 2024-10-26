@@ -261,13 +261,14 @@ switch ($_GET['aksi'] ?? '') {
         $harga_beli = $_POST['harga_beli'];
         $harga_jual = $_POST['harga_jual'];
         $satuan = $_POST['satuan'];
+        $golongan_obat = $_POST['golongan_obat'];
         $foto = $_FILES['foto']['name'];
         $tmp = $_FILES['foto']['tmp_name'];
         $path = 'assets/images/product/' . $foto;
         move_uploaded_file($tmp, $path);
 
-        $sql = "INSERT INTO produk (nama_produk, kode_produk, deskripsi, harga_beli, harga_jual, satuan, foto) VALUES ('$nama_produk',
-'$kode_produk', '$deskripsi', '$harga_beli', '$harga_jual', '$satuan', '$path')";
+        $sql = "INSERT INTO produk (nama_produk, kode_produk, deskripsi, harga_beli, harga_jual, satuan, foto, golongan_obat) 
+        VALUES ('$nama_produk','$kode_produk', '$deskripsi', '$harga_beli', '$harga_jual', '$satuan', '$path', '$golongan_obat')";
         $result = $conn->query($sql);
         if ($result) {
             echo 'ok';
@@ -285,8 +286,9 @@ switch ($_GET['aksi'] ?? '') {
         $harga_beli = $_POST['harga_beli'];
         $harga_jual = $_POST['harga_jual'];
         $satuan = $_POST['satuan'];
+        $golongan_obat = $_POST['golongan_obat'];
         $sql = "UPDATE produk SET nama_produk = '$nama_produk', deskripsi = '$deskripsi', harga_beli = '$harga_beli', harga_jual
-= '$harga_jual', satuan = '$satuan' WHERE id_produk = '$id'";
+= '$harga_jual', satuan = '$satuan', golongan_obat = '$golongan_obat' WHERE id_produk = '$id'";
         $result = $conn->query($sql);
         if ($result) {
             echo 'ok';

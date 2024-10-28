@@ -42,7 +42,9 @@
 
 <script>
     $(document).ready(function () {
-        $('#tabel-data').DataTable();
+        $('#tabel-data').DataTable({
+            order: [[0, 'desc']],
+        });
         $('#tabel-data').on('click', '#edit', function () {
             const id = $(this).data('id');
             $.ajax({

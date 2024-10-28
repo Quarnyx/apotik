@@ -26,8 +26,11 @@ switch ($_GET['page'] ?? '') {
     case 'jurnal':
         include 'pages/jurnal/index.php';
         break;
-    case 'laporan-persediaan':
-        include 'pages/laporan-persediaan/index.php';
+    case 'laporan-penjualan':
+        include 'pages/laporan-penjualan/index.php';
+        break;
+    case 'laporan-pembelian':
+        include 'pages/laporan-pembelian/index.php';
         break;
     case 'kartu-persediaan':
         include 'pages/kartu-persediaan/index.php';

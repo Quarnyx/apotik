@@ -69,7 +69,7 @@
         <div class="col-lg-6">
             <div class="mb-3">
                 <label for="simpleinput" class="form-label">Harga Beli</label>
-                <input type="number" class="form-control" name="harga_beli" id="harga_beli" required>
+                <input type="text" class="form-control" name="harga_beli" id="harga_beli" required readonly>
             </div>
         </div>
         <div class="col-lg-6">
@@ -127,7 +127,7 @@
         $('#produk').on('change', function () {
             const id = $(this).val();
             const hargabeli = $(this).find(':selected').data('hargabeli');
-            $('#harga_beli').val(hargabeli);
+            $('#harga_beli').val("Rp. " + hargabeli.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
         });
 
     })

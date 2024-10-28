@@ -74,10 +74,10 @@
                         if (data == "ok") {
                             loadTable();
                             $('.modal').modal('hide');
-                            alertify.success('Supplier Berhasil Dihapus');
+                            alertify.success('Produk Berhasil Dihapus');
 
                         } else {
-                            alertify.error('Supplier Gagal Dihapus');
+                            alertify.error('Produk Gagal Dihapus');
 
                         }
                     },

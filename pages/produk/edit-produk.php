@@ -82,10 +82,11 @@ if ($result->num_rows > 0) {
 </form>
 <script>
     $("#harga_beli").on("keyup", function () {
-        var value = $(this).val();
-        $("#harga_jual").val(value);
-        // add 10% up 
-        $("#harga_jual").val(parseInt($("#harga_jual").val()) + (parseInt($("#harga_jual").val()) * 0.1))
+        var value = $(this).val().replace(/[^\d]/g, "");
+        $(this).val("Rp. " + value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
+        // up the price by 10%
+        var newPrice = (parseFloat(value) * 1.1).toFixed(0);
+        $("#harga_jual").val("Rp. " + newPrice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
     })
     $("#form-edit").submit(function (e) {
         e.preventDefault();

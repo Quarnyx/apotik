@@ -1,23 +1,10 @@
 <form id="tambah-produk" enctype="multipart/form-data">
     <?php
     require_once '../../config.php';
-    $query = mysqli_query($conn, "SELECT MAX(kode_produk) AS kode_produk FROM produk");
-    $data = mysqli_fetch_array($query);
-    $max = $data['kode_produk'] ? substr($data['kode_produk'], 4, 3) : "000";
-    $no = $max + 1;
-    $char = "PRD-";
-    $kode = $char . sprintf("%03s", $no);
     ?>
 
     <div class="d-grid gap-3">
         <div class="row">
-            <div class="col-lg-6">
-                <div class="mb-3">
-                    <label class="form-label">Kode Produk</label>
-                    <input type="text" name="kode_produk" class="form-control" placeholder="Jumlah Transaksi"
-                        value="<?= $kode; ?>" readonly>
-                </div>
-            </div>
             <div class="col-lg-6">
                 <div class="mb-3">
                     <label class="form-label">Satuan Produk</label>
@@ -26,8 +13,17 @@
                         <option value="PCS">PCS</option>
                         <option value="Botolan">Botolan</option>
                         <option value="Kapsul">Kapsul</option>
+                        <option value="Strip">Strip</option>
                     </select>
                 </div>
+            </div>
+            <div class="col-md-6">
+                <label for="golongan_obat" class="form-label">Golongan Obat</label>
+                <select class="form-select" name="golongan_obat">
+                    <option selected>Pilih Golongan Obat</option>
+                    <option value="Obat Luar">Obat Luar</option>
+                    <option value="Obat Dalam">Obat Dalam</option>
+                </select>
             </div>
         </div>
         <div class="row">
@@ -64,32 +60,25 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label for="golongan_obat" class="form-label">Golongan Obat</label>
-                <select class="form-select" name="golongan_obat">
-                    <option selected>Pilih Golongan Obat</option>
-                    <option value="Obat Luar">Obat Luar</option>
-                    <option value="Obat Dalam">Obat Dalam</option>
-                </select>
-            </div>
-        </div>
 
     </div>
-    <button type="submit" class="btn btn-primary mt-3">SImpan</button>
+    <button type="submit" class="btn btn-primary mt-3">Simpan</button>
 </form>
 <script>
+
     $("#harga_beli").on("keyup", function () {
-        var value = $(this).val();
-        $("#harga_jual").val(value);
-        // add 10% up 
-        $("#harga_jual").val(parseInt($("#harga_jual").val()) + (parseInt($("#harga_jual").val()) * 0.1))
+        var value = $(this).val().replace(/[^\d]/g, "");
+        $(this).val("Rp. " + value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
+        // up the price by 10%
+        var newPrice = (parseFloat(value) * 1.1).toFixed(0);
+        $("#harga_jual").val("Rp. " + newPrice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
     })
 
     $("#tambah-produk").submit(function (e) {
-        var formData = new FormData(this);
-
         e.preventDefault();
+        var formData = new FormData(this);
+        console.log(formData);
+
         $.ajax({
             type: "POST",
             url: "proses.php?aksi=tambah-produk",

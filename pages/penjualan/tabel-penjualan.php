@@ -15,7 +15,7 @@
     <tbody>
         <?php
         include "../../config.php";
-        $query = mysqli_query($conn, query: "SELECT * FROM v_penjualan ORDER BY `id_penjualan` DESC");
+        $query = mysqli_query($conn, query: "SELECT sum(jumlah) AS jumlah, id_penjualan, kode_penjualan, kategori_obat, nama_produk, tanggal_penjualan, harga_jual, satuan FROM v_penjualan GROUP BY kode_penjualan ORDER BY `id_penjualan` DESC");
         while ($data = mysqli_fetch_array($query)) {
             ?>
             <tr>
@@ -41,22 +41,11 @@
 <script>
     $(document).ready(function () {
         $('#tabel-data').DataTable(
-            "ordering": false,
+            {
+                responsive: true,
+                order: [[0, 'desc']],
+            }
         );
-        $('#tabel-data').on('click', '#edit', function () {
-            const id = $(this).data('id');
-            $.ajax({
-                type: 'POST',
-                url: 'halaman/penjualan/edit-penjualan.php',
-                data: 'id=' + id,
-                success: function (data) {
-                    $('.modal').modal('show');
-                    $('.modal-title').html('Edit Data ' + name);
-                    $('.modal .modal-body').html(data);
-                }
-            })
-        });
-
         $('#tabel-data').on('click', '#delete', function () {
             const id_penjualan = $(this).data('id');
             const kodetransaksi = $(this).data('kodetransaksi');

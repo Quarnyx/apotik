@@ -23,124 +23,98 @@ function hapusTransaksi($id, $conn)
 }
 function handleSale($id_produk, $jumlah, $harga_jual, $tanggal_penjualan, $kategori_obat, $kode_penjualan, $id_pengguna, $conn)
 {
-    // Step 1: Insert ke tabel penjualan
-    $sale_date = $tanggal_penjualan;
-    $insertSale = "INSERT INTO penjualan (id_produk, jumlah, harga_jual, tanggal_penjualan, kategori_obat, kode_penjualan, id_pengguna) VALUES (?,?,?,?,?,?,?)";
-    $stmt = $conn->prepare($insertSale);
-    $stmt->bind_param("iiisssi", $id_produk, $jumlah, $harga_jual, $sale_date, $kategori_obat, $kode_penjualan, $id_pengguna);
-    $stmt->execute();
-    $stmt->close();
+
 
     // Step 2: Kurangin dengan FIFO
     $remaining_quantity = $jumlah;
 
     // ambil data inv terlama
-    $fetchInventory = "SELECT id_inventory, jumlah FROM inventory WHERE id_produk = ? ORDER BY tanggal_masuk ASC";
+    $fetchInventory = "SELECT id_inventory, jumlah, kode_pembelian FROM inventory WHERE id_produk = ? ORDER BY tanggal_masuk ASC";
     $stmt = $conn->prepare($fetchInventory);
     $stmt->bind_param("i", $id_produk);
-    $stmt->execute();
+    // Execute the query and check for errors
+    if (!$stmt->execute()) {
+        echo "Error executing query: " . $stmt->error;
+        return;
+    }
+    // Retrieve the result set and check if any rows were returned
     $result = $stmt->get_result();
+    if ($result->num_rows === 0) {
+        echo "No inventory available for this product!";
+        return;
+    }
 
     // Process semua batch
     while ($row = $result->fetch_assoc()) {
+        if ($remaining_quantity <= 0)
+            break;
         $id_inventory = $row['id_inventory'];
         $batch_quantity = $row['jumlah'];
+        $quantity_taken = min($remaining_quantity, $batch_quantity);
+        $new_quantity = $batch_quantity - $quantity_taken;
+        // Update  inventory record
+        $updateInventory = "UPDATE inventory SET jumlah = ? WHERE id_inventory = ?";
+        $updateStmt = $conn->prepare($updateInventory);
+        $updateStmt->bind_param("ii", $new_quantity, $id_inventory);
+        $updateStmt->execute();
+        $updateStmt->close();
 
-        // If the batch jumlah is enough to cover the remaining sale jumlah
-        if ($batch_quantity >= $remaining_quantity) {
-            // Deduct the remaining jumlah from this batch
-            $new_quantity = $batch_quantity - $remaining_quantity;
+        // Insert ke tabel penjualan
+        $sale_date = $tanggal_penjualan;
+        $insertSale = "INSERT INTO penjualan (id_produk, jumlah, harga_jual, tanggal_penjualan, kategori_obat, kode_penjualan, id_pengguna, kode_pembelian) VALUES (?,?,?,?,?,?,?,?)";
+        $stmt = $conn->prepare($insertSale);
+        $stmt->bind_param("iiisssis", $id_produk, $quantity_taken, $harga_jual, $sale_date, $kategori_obat, $kode_penjualan, $id_pengguna, $row['kode_pembelian']);
+        $stmt->execute();
+        $stmt->close();
 
-            // Update the inventory record
-            $updateInventory = "UPDATE inventory SET jumlah = ? WHERE id_inventory = ?";
-            $updateStmt = $conn->prepare($updateInventory);
-            $updateStmt->bind_param("ii", $new_quantity, $id_inventory);
-            $updateStmt->execute();
-            $updateStmt->close();
+        $remaining_quantity -= $quantity_taken;
 
-            // If this batch is now empty, delete the record (optional)
-            if ($new_quantity == 0) {
-                $deleteInventory = "DELETE FROM inventory WHERE id_inventory = ?";
-                $deleteStmt = $conn->prepare($deleteInventory);
-                $deleteStmt->bind_param("i", $id_inventory);
-                $deleteStmt->execute();
-                $deleteStmt->close();
-            }
-
-            // Sale fully processed
-            break;
-
-        } else {
-            // Deduct the entire batch jumlah and continue to the next batch
-            $remaining_quantity -= $batch_quantity;
-
-            // Delete this batch since it's fully consumed
+        if ($new_quantity == 0) {
             $deleteInventory = "DELETE FROM inventory WHERE id_inventory = ?";
             $deleteStmt = $conn->prepare($deleteInventory);
             $deleteStmt->bind_param("i", $id_inventory);
             $deleteStmt->execute();
             $deleteStmt->close();
         }
-    }
 
-    $stmt->close();
+    }
 }
-function deleteSale($id_penjualan, $conn)
+
+function deleteSale($kode_penjualan, $conn)
 {
-    // Step 1: Fetch the sale details
-    $fetchSale = "SELECT id_produk, jumlah FROM penjualan WHERE id_penjualan = ?";
-    $stmt = $conn->prepare($fetchSale);
-    $stmt->bind_param("i", $id_penjualan);
+    // Step 1: Fetch batch details for the sale
+    $fetchDetails = "SELECT id_penjualan, jumlah, id_produk FROM penjualan WHERE kode_penjualan = ?";
+    $stmt = $conn->prepare($fetchDetails);
+    $stmt->bind_param("s", $kode_penjualan);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // If sale not found, exit
+    // Check if sale exists
     if ($result->num_rows === 0) {
-        echo "Sale not found!";
+        echo "Penjualan tidak ada";
         return;
     }
 
-    $sale = $result->fetch_assoc();
-    $id_produk = $sale['id_produk'];
-    $jumlah = $sale['jumlah'];
+    // Step 2: Restore inventory based on `sale_details` entries
+    while ($row = $result->fetch_assoc()) {
+        $id_penjualan = $row['id_penjualan'];
+        $jumlah = $row['jumlah'];
+        $id_produk = $row['id_produk'];
 
-    $stmt->close();
-
-    // Step 2: Restore inventory in reverse FIFO order (latest deducted batch gets restored first)
-    $remaining_quantity = $jumlah;
-
-    // Fetch the inventory batches in reverse order (from most recent to oldest)
-    $fetchInventory = "SELECT id_inventory, jumlah FROM inventory WHERE id_produk = ? ORDER BY tanggal_masuk DESC";
-    $stmt = $conn->prepare($fetchInventory);
-    $stmt->bind_param("i", $id_produk);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Restore the sold jumlah to inventory
-    while (($row = $result->fetch_assoc()) !== false && $remaining_quantity > 0) {
-        $id_inventory = $row['id_inventory'];
-        $batch_quantity = $row['jumlah'];
-
-        // Find how much to restore (either all of the remaining sale jumlah or enough to match batch capacity)
-        $restore_quantity = min($remaining_quantity, $batch_quantity);
-
-        // Update the inventory by adding back the restore jumlah
-        $updateInventory = "UPDATE inventory SET jumlah = jumlah + ? WHERE id_inventory = ?";
-        $updateStmt = $conn->prepare($updateInventory);
-        $updateStmt->bind_param("ii", $restore_quantity, $id_inventory);
+        // Update the inventory by adding back the quantity taken
+        $restoreInventory = "UPDATE inventory SET jumlah = jumlah + ? WHERE id_produk = ? ORDER BY tanggal_masuk ASC LIMIT 1";
+        $updateStmt = $conn->prepare($restoreInventory);
+        $updateStmt->bind_param("ii", $jumlah, $id_produk);
         $updateStmt->execute();
         $updateStmt->close();
-
-        // Subtract the restored jumlah from the remaining amount
-        $remaining_quantity -= $restore_quantity;
     }
 
+    // Close the result set and statement
     $stmt->close();
-
-    // Step 3: Delete the sale record
-    $deleteSale = "DELETE FROM penjualan WHERE id_penjualan = ?";
+    // Step 4: Delete the sale record from the `sales` table
+    $deleteSale = "DELETE FROM penjualan WHERE kode_penjualan = ?";
     $stmt = $conn->prepare($deleteSale);
-    $stmt->bind_param("i", $id_penjualan);
+    $stmt->bind_param("s", $kode_penjualan);
     $stmt->execute();
     $stmt->close();
 }
@@ -255,12 +229,22 @@ switch ($_GET['aksi'] ?? '') {
         }
         break;
     case 'tambah-produk':
+        $satuan = $_POST['satuan'];
+        // generate product code based on $satuan
+        $kode_produk = strtoupper(substr($satuan, 0, 3));
+        // find last product code
+        $query = mysqli_query($conn, "SELECT MAX(kode_produk) AS kode_produk FROM produk WHERE kode_produk LIKE '$kode_produk%'");
+        $data = mysqli_fetch_array($query);
+        $max = $data['kode_produk'] ? substr($data['kode_produk'], 4, 3) : "000";
+        $no = $max + 1;
+        $char = $kode_produk . "-";
+        $kode_produk = $char . sprintf("%03s", $no);
         $nama_produk = $_POST['nama_produk'];
         $deskripsi = $_POST['deskripsi'];
-        $kode_produk = $_POST['kode_produk'];
         $harga_beli = $_POST['harga_beli'];
+        $harga_beli = preg_replace('/[^0-9]/', '', $_POST['harga_beli']);
         $harga_jual = $_POST['harga_jual'];
-        $satuan = $_POST['satuan'];
+        $harga_jual = preg_replace('/[^0-9]/', '', $_POST['harga_jual']);
         $golongan_obat = $_POST['golongan_obat'];
         $foto = $_FILES['foto']['name'];
         $tmp = $_FILES['foto']['tmp_name'];
@@ -284,7 +268,9 @@ switch ($_GET['aksi'] ?? '') {
         $nama_produk = $_POST['nama_produk'];
         $deskripsi = $_POST['deskripsi'];
         $harga_beli = $_POST['harga_beli'];
+        $harga_beli = preg_replace('/[^0-9]/', '', $_POST['harga_beli']);
         $harga_jual = $_POST['harga_jual'];
+        $harga_jual = preg_replace('/[^0-9]/', '', $_POST['harga_jual']);
         $satuan = $_POST['satuan'];
         $golongan_obat = $_POST['golongan_obat'];
         $sql = "UPDATE produk SET nama_produk = '$nama_produk', deskripsi = '$deskripsi', harga_beli = '$harga_beli', harga_jual
@@ -380,6 +366,8 @@ switch ($_GET['aksi'] ?? '') {
         $id_supplier = $_POST['id_supplier'];
         $kode_pembelian = $_POST['kode_pembelian'];
         $harga_beli = $_POST['harga_beli'];
+        $harga_beli = preg_replace('/[^0-9]/', '', $_POST['harga_beli']);
+        $harga_beli = substr($harga_beli, 0, -2);
         $jumlah = $_POST['jumlah'];
         $total = $harga_beli * $jumlah;
         $deskripsi = 'Pembelian' . $kode_pembelian;
@@ -426,6 +414,8 @@ VALUES ('$id_supplier', '$id_produk', '$jumlah', '$harga_beli', '$kode_pembelian
         $id_produk = $_POST['id_produk'];
         $jumlah = $_POST['jumlah'];
         $harga_jual = $_POST['harga_jual'];
+        $harga_jual = preg_replace('/[^0-9]/', '', $_POST['harga_jual']);
+        $harga_jual = substr($harga_jual, 0, -2);
         $harga_beli = $_POST['harga_beli'];
         $tanggal_penjualan = $_POST['tanggal_penjualan'];
         $kode_penjualan = $_POST['kode_penjualan'];
@@ -455,7 +445,7 @@ VALUES ('$id_supplier', '$id_produk', '$jumlah', '$harga_beli', '$kode_pembelian
     case 'hapus-penjualan':
         $id_penjualan = $_POST['id_penjualan'];
         $kode_penjualan = $_POST['kodetransaksi'];
-        deleteSale($id_penjualan, $conn);
+        deleteSale($kode_penjualan, $conn);
         hapusTransaksi($kode_penjualan, $conn);
         echo json_encode(['status' => 'success', 'message' => 'Data penjualan berhasil dihapus']);
         break;

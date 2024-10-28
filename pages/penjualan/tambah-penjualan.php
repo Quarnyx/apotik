@@ -66,7 +66,7 @@
         <div class="col-lg-6">
             <div class="mb-3">
                 <label for="simpleinput" class="form-label">Harga</label>
-                <input type="number" class="form-control" name="harga_jual" id="harga" required>
+                <input type="text" class="form-control" name="harga_jual" id="harga" required readonly>
                 <input type="hidden" name="harga_beli" id="harga_beli">
             </div>
         </div>
@@ -95,7 +95,7 @@
             const hargabeli = $(this).find(':selected').data('hargabeli');
             $('#stok').val($(this).find(':selected').data('stok'));
             $('#harga_beli').val(hargabeli);
-            $('#harga').val(harga);
+            $('#harga').val("Rp. " + harga.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
         });
 
         $('#jumlah_beli').on('change', function () {

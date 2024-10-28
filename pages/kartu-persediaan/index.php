@@ -72,7 +72,8 @@
     pb.jumlah AS jumlah_beli,
     pb.harga_beli,
 	pj.jumlah AS jumlah_jual,
-    pj.harga_jual
+    pj.harga_jual,
+    pj.id_penjualan
     FROM pembelian pb
     LEFT JOIN penjualan pj ON pj.tanggal_penjualan = pb.tanggal_masuk AND pj.id_produk=pb.id_produk
     WHERE pb.id_produk = '$_GET[id]'
@@ -83,7 +84,8 @@
 	pb.jumlah AS jumlah_beli,
     pb.harga_beli,
     pj.jumlah AS jumlah_jual,
-    pj.harga_jual
+    pj.harga_jual,
+    pj.id_penjualan
     FROM penjualan pj
     LEFT JOIN pembelian pb ON pb.tanggal_masuk = pj.tanggal_penjualan AND pb.id_produk=pj.id_produk
     WHERE pj.id_produk = '$_GET[id]'
@@ -150,13 +152,14 @@
                                         <th rowspan="2" class="text-center align-content-center">Tanggal</th>
                                         <th rowspan="2" class="text-center align-content-center">Kode</th>
                                         <th colspan="3" class="text-center align-content-center">Masuk</th>
-                                        <th colspan="3" class="text-center align-content-center">Keluar</th>
+                                        <th colspan="4" class="text-center align-content-center">Keluar</th>
                                         <th colspan="2" class="text-center align-content-center">Persediaan</th>
                                     </tr>
                                     <tr>
                                         <th class="text-center">Qty</th>
                                         <th class="text-center">Harga</th>
                                         <th class="text-center">Total Harga</th>
+                                        <th class="text-center">Dari Batch</th>
                                         <th class="text-center">Qty</th>
                                         <th class="text-center">Harga</th>
                                         <th class="text-center">Total Harga</th>
@@ -185,12 +188,28 @@
                                             }
                                             ?>
                                             <td class="text-center"><?= $row['kode'] ?></td>
+                                            <!-- get kode_pembelian from penjualan by kode_penjualan -->
+                                            <?php
+
+                                            $sqlKodePembelian = "SELECT kode_pembelian FROM penjualan WHERE id_penjualan = '{$row['id_penjualan']}'";
+                                            $resultKodePembelian = $conn->query($sqlKodePembelian);
+                                            $rowKodePembelian = $resultKodePembelian->fetch_assoc();
+                                            if ($rowKodePembelian) {
+                                                $sqlpembelian = "SELECT * FROM pembelian WHERE kode_pembelian = '{$rowKodePembelian['kode_pembelian']}'";
+                                                $resultpembelian = $conn->query($sqlpembelian);
+                                                $rowpembelian = $resultpembelian->fetch_assoc();
+                                            }
+
+                                            ?>
                                             <td class="text-center"><?= $row['jumlah_beli'] ?></td>
                                             <td class="text-center">
                                                 <?php echo !empty($row['harga_beli']) ? "Rp. " . number_format($row['harga_beli'], 0, ',', '.') : 0; ?>
                                             </td>
                                             <td class="text-center">
                                                 <?php echo !empty($row['harga_beli']) ? "Rp. " . number_format($row['harga_beli'] * $row['jumlah_beli'], 0, ',', '.') : 0; ?>
+                                            </td>
+                                            <td class="text-center">
+                                                <?= !empty($rowpembelian['tanggal_masuk']) ? $rowpembelian['tanggal_masuk'] : '-' ?>
                                             </td>
                                             <td class="text-center"><?= $row['jumlah_jual'] ?></td>
                                             <td class="text-center">
@@ -228,6 +247,7 @@
                                         <td class="text-center">
                                             <?php echo "Rp. " . number_format($totalPurchase, 0, ',', '.'); ?>
                                         </td>
+                                        <td></td>
                                         <td class="text-center"><?php echo $qtySales; ?></td>
                                         <td></td>
                                         <td class="text-center">

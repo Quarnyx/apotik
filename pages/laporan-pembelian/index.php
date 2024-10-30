@@ -43,7 +43,7 @@
                 ?>
                 <div class="card-body">
                     <form action="" method="get" class="row g-3">
-                        <input type="hidden" name="page" value="laporan-persediaan">
+                        <input type="hidden" name="page" value="laporan-pembelian">
                         <div class="col-md-6">
                             <label for="validationDefault01" class="form-label">Dari Tanggal</label>
                             <input type="date" class="form-control" id="validationDefault01" required=""

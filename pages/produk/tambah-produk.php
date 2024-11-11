@@ -10,10 +10,12 @@
                     <label class="form-label">Satuan Produk</label>
                     <select class="form-select" name="satuan">
                         <option selected>Pilih Satuan</option>
-                        <option value="PCS">PCS</option>
+                        <option value="Tube">Tube</option>
                         <option value="Botolan">Botolan</option>
-                        <option value="Kapsul">Kapsul</option>
                         <option value="Strip">Strip</option>
+                        <option value="Pot">Pot</option>
+                        <option value="Dus">Dus</option>
+                        <option value="Buah">Buah</option>
                     </select>
                 </div>
             </div>

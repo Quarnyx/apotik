@@ -25,8 +25,12 @@ if ($result->num_rows > 0) {
                         <option selected>Pilih Satuan</option>
                         <option value="PCS" <?= ($row['satuan'] == 'PCS' ? 'selected' : '') ?>>PCS</option>
                         <option value="Botolan" <?= ($row['satuan'] == 'Botolan' ? 'selected' : '') ?>>Botolan</option>
-                        <option value="Kapsul" <?= ($row['satuan'] == 'Kapsul' ? 'selected' : '') ?>>Kapsul</option>
+                        <option value="Strip" <?= ($row['satuan'] == 'Strip' ? 'selected' : '') ?> >Strip</option>
+                        <option value="Pot" <?= ($row['satuan'] == 'Pot' ? 'selected' : '') ?>  >Pot</option>
+                        <option value="Dus" <?= ($row['satuan'] == 'Dus' ? 'selected' : '') ?>>Dus</option>
+                        <option value="Buah" <?= ($row['satuan'] == 'Buah' ? 'selected' : '') ?>>Buah</option>
                     </select>
+                    <input type="hidden" name="satuan_lama" value="<?= $row['satuan']?>">
                 </div>
             </div>
         </div>

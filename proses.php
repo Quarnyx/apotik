@@ -264,6 +264,8 @@ switch ($_GET['aksi'] ?? '') {
         }
         break;
     case 'edit-produk':
+        
+        
         $id = $_POST['id'];
         $nama_produk = $_POST['nama_produk'];
         $deskripsi = $_POST['deskripsi'];
@@ -272,8 +274,21 @@ switch ($_GET['aksi'] ?? '') {
         $harga_jual = $_POST['harga_jual'];
         $harga_jual = preg_replace('/[^0-9]/', '', $_POST['harga_jual']);
         $satuan = $_POST['satuan'];
+        $satuan_lama = $_POST['satuan_lama'];
         $golongan_obat = $_POST['golongan_obat'];
-        $sql = "UPDATE produk SET nama_produk = '$nama_produk', deskripsi = '$deskripsi', harga_beli = '$harga_beli', harga_jual
+        $kode_produk = $_POST['kode_produk'];
+        // jika satuan berubah
+        if($satuan != $satuan_lama){
+            $generator_kode_produk = strtoupper(substr($satuan, 0, 3));
+            $query = mysqli_query($conn, "SELECT MAX(kode_produk) AS kode_produk FROM produk WHERE kode_produk LIKE '$generator_kode_produk%'");
+            $data = mysqli_fetch_array($query);
+            $max = $data['kode_produk'] ? substr($data['kode_produk'], 4, 3) : "000";
+            $no = $max + 1;
+            $char = $generator_kode_produk . "-";
+            $kode_produk = $char . sprintf("%03s", $no);
+        }
+
+        $sql = "UPDATE produk SET kode_produk = '$kode_produk', nama_produk = '$nama_produk', deskripsi = '$deskripsi', harga_beli = '$harga_beli', harga_jual
 = '$harga_jual', satuan = '$satuan', golongan_obat = '$golongan_obat' WHERE id_produk = '$id'";
         $result = $conn->query($sql);
         if ($result) {

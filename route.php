@@ -38,6 +38,18 @@ switch ($_GET['page'] ?? '') {
     case 'laporan-supplier':
         include 'pages/laporan-supplier/index.php';
         break;
+    case 'return-pembelian':
+        include 'pages/return-pembelian/index.php';
+        break;
+    case 'laporan-return-pembelian':
+        include 'pages/laporan-return-pembelian/index.php';
+        break;
+    case 'return-penjualan':
+        include 'pages/return-penjualan/index.php';
+        break;
+    case 'laporan-return-penjualan':
+        include 'pages/laporan-return-penjualan/index.php';
+        break;
 
     default:
         include 'page/404.php';

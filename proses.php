@@ -264,8 +264,8 @@ switch ($_GET['aksi'] ?? '') {
         }
         break;
     case 'edit-produk':
-        
-        
+
+
         $id = $_POST['id'];
         $nama_produk = $_POST['nama_produk'];
         $deskripsi = $_POST['deskripsi'];
@@ -278,7 +278,7 @@ switch ($_GET['aksi'] ?? '') {
         $golongan_obat = $_POST['golongan_obat'];
         $kode_produk = $_POST['kode_produk'];
         // jika satuan berubah
-        if($satuan != $satuan_lama){
+        if ($satuan != $satuan_lama) {
             $generator_kode_produk = strtoupper(substr($satuan, 0, 3));
             $query = mysqli_query($conn, "SELECT MAX(kode_produk) AS kode_produk FROM produk WHERE kode_produk LIKE '$generator_kode_produk%'");
             $data = mysqli_fetch_array($query);
@@ -496,6 +496,129 @@ VALUES ('$id_supplier', '$id_produk', '$jumlah', '$harga_beli', '$kode_pembelian
         $id = $_POST['id'];
         $sql = "DELETE FROM transaksi WHERE id_transaksi = '$id'";
         $result = $conn->query($sql);
+        if ($result) {
+            http_response_code(200);
+            echo json_encode(['status' => 'success', 'message' => 'Data transaksi berhasil dihapus']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Data transaksi gagal dihapus']);
+        }
+        break;
+    case 'tambah-return-pembelian':
+        $kode_pembelian = $_POST['kode_pembelian'];
+        $jumlah = $_POST['jumlah'];
+        $harga_beli = $_POST['harga_beli'];
+        $harga_beli = preg_replace('/[^0-9]/', '', $_POST['harga_beli']);
+        $id_supplier = $_POST['id_supplier'];
+        $tanggal_return = $_POST['tanggal_return'];
+        $id_produk = $_POST['id_produk'];
+        $sql = "INSERT INTO `apotik`.`return_pembelian` 
+        (`kode_pembelian`, `jumlah`, `harga_beli`, `id_supplier`, `tanggal_return`, `id_produk`) 
+        VALUES ('$kode_pembelian', '$jumlah', '$harga_beli', '$id_supplier', '$tanggal_return', '$id_produk')";
+        $result = $conn->query($sql);
+        // check to inventory
+        $sql = "SELECT * FROM `inventory` WHERE `id_produk` = '$id_produk' AND `kode_pembelian` = '$kode_pembelian'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if ($row['jumlah'] >= $jumlah) {
+                $jumlahInventory = $row['jumlah'] - $jumlah;
+                $sql = "UPDATE `inventory` SET `jumlah` = '$jumlahInventory' WHERE `id_produk` = '$id_produk' AND `kode_pembelian` = '$kode_pembelian'";
+                $conn->query($sql);
+                // insert to transaksi
+                $totalReturn = $jumlah * $harga_beli;
+                $kodetransaksi = 'RT' . rand(1000, 9999);
+                $sql = "INSERT INTO `apotik`.`transaksi` (`id_akun_debit`, `id_akun_kredit`, kode_transaksi, `total`, `deskripsi`, `tanggal_transaksi`) 
+                VALUES ('1', '2', '$kodetransaksi', '$totalReturn', 'Return Pembelian - $kode_pembelian', '$tanggal_return')";
+                $conn->query($sql);
+            }
+        }
+        if ($result) {
+            header('location:index.php?page=return-pembelian');
+        } else {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Data transaksi gagal dihapus']);
+        }
+        break;
+    case 'hapus-return-pembelian':
+        $id_return_pembelian = $_POST['id_return_pembelian'];
+        $kode_pembelian = $_POST['kode_pembelian'];
+        $jumlah = $_POST['jumlah'];
+        $sql = "DELETE FROM `apotik`.`return_pembelian` WHERE `id_return_pembelian` = '$id_return_pembelian'";
+        $result = $conn->query($sql);
+        // delete from transaksi
+        $sql = "DELETE FROM `apotik`.`transaksi` WHERE `deskripsi` = 'Return Pembelian - $kode_pembelian'";
+        $result = $conn->query($sql);
+        // check to inventory
+        $sql = "SELECT * FROM `inventory` WHERE kode_pembelian = '$kode_pembelian'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $jumlahInventory = $row['jumlah'] + $jumlah;
+            $sql = "UPDATE `inventory` SET `jumlah` = '$jumlahInventory' WHERE `kode_pembelian` = '$kode_pembelian'";
+            $conn->query($sql);
+        }
+        if ($result) {
+            http_response_code(200);
+            echo json_encode(['status' => 'success', 'message' => 'Data transaksi berhasil dihapus']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Data transaksi gagal dihapus']);
+        }
+        break;
+    case 'tambah-return-penjualan':
+        $kode_penjualan = $_POST['kode_penjualan'];
+        $jumlah = $_POST['jumlah'];
+        $harga_jual = $_POST['harga_jual'];
+        $harga_jual = preg_replace('/[^0-9]/', '', $_POST['harga_jual']);
+        $tanggal_return = $_POST['tanggal_return'];
+        $id_produk = $_POST['id_produk'];
+        $sql = "INSERT INTO `apotik`.`return_penjualan` 
+        (`kode_penjualan`, `jumlah`, `harga_jual`, `tanggal_return`, `id_produk`) 
+        VALUES ('$kode_penjualan', '$jumlah', '$harga_jual','$tanggal_return', '$id_produk')";
+        $result = $conn->query($sql);
+        // check to penjualan
+        $sql = "SELECT * FROM `penjualan` WHERE `id_produk` = '$id_produk' AND `kode_penjualan` = '$kode_penjualan'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if ($row['jumlah'] >= $jumlah) {
+                $jumlahInventory = $row['jumlah'] - $jumlah;
+                $sql = "UPDATE `penjualan` SET `jumlah` = '$jumlahInventory' WHERE `id_produk` = '$id_produk' AND `kode_penjualan` = '$kode_penjualan'";
+                $conn->query($sql);
+                // insert to transaksi
+                $totalReturn = $jumlah * $harga_jual;
+                $kodetransaksi = 'RT' . rand(1000, 9999);
+                $sql = "INSERT INTO `apotik`.`transaksi` (`id_akun_debit`, `id_akun_kredit`, kode_transaksi, `total`, `deskripsi`, `tanggal_transaksi`) 
+                VALUES ('2', '1', '$kodetransaksi', '$totalReturn', 'Return Penjualan - $kode_penjualan', '$tanggal_return')";
+                $conn->query($sql);
+            }
+        }
+        if ($result) {
+            header('location:index.php?page=return-penjualan');
+        } else {
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Data transaksi gagal dihapus']);
+        }
+        break;
+    case 'hapus-return-penjualan':
+        $id_return_penjualan = $_POST['id_return_penjualan'];
+        $kode_penjualan = $_POST['kode_penjualan'];
+        $jumlah = $_POST['jumlah'];
+        $sql = "DELETE FROM `apotik`.`return_penjualan` WHERE `id_return_penjualan` = '$id_return_penjualan'";
+        $result = $conn->query($sql);
+        // delete from transaksi
+        $sql = "DELETE FROM `apotik`.`transaksi` WHERE `deskripsi` = 'Return Pembelian - $kode_penjualan'";
+        $result = $conn->query($sql);
+        // check to inventory
+        $sql = "SELECT * FROM `penjualan` WHERE kode_penjualan = '$kode_penjualan'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $jumlahInventory = $row['jumlah'] + $jumlah;
+            $sql = "UPDATE `penjualan` SET `jumlah` = '$jumlahInventory' WHERE `kode_penjualan` = '$kode_penjualan'";
+            $conn->query($sql);
+        }
         if ($result) {
             http_response_code(200);
             echo json_encode(['status' => 'success', 'message' => 'Data transaksi berhasil dihapus']);

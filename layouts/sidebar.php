@@ -107,6 +107,12 @@
                             <span class="menu-item" data-key="t-vertical">Pembelian</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="?page=return-pembelian">
+                            <i class="bx bx-layout icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-vertical">Return Pembelian</span>
+                        </a>
+                    </li>
                     <li class="menu-title" data-key="t-components">Laporan</li>
                     <li>
                         <a href="?page=laporan-penjualan">
@@ -119,6 +125,19 @@
                         <a href="?page=laporan-pembelian">
                             <i class="bx bx-layout icon nav-icon"></i>
                             <span class="menu-item" data-key="t-vertical">Pembelian</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="?page=laporan-return-pembelian">
+                            <i class="bx bx-layout icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-vertical">Return Pembelian</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?page=laporan-return-penjualan">
+                            <i class="bx bx-layout icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-vertical">Return Penjualan</span>
                         </a>
                     </li>
 
@@ -169,6 +188,12 @@
                         <a href="?page=penjualan">
                             <i class="bx bx-layout icon nav-icon"></i>
                             <span class="menu-item" data-key="t-vertical">Penjualan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?page=return-penjualan">
+                            <i class="bx bx-layout icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-vertical">Return Penjualan</span>
                         </a>
                     </li>
                     <?php

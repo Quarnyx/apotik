@@ -73,11 +73,22 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="mb-3">
-                <label for="simpleinput" class="form-label">Jumlah Beli</label>
-                <input type="number" class="form-control" name="jumlah" required>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="mb-3">
+                        <label for="simpleinput" class="form-label">Jumlah Beli</label>
+                        <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="mb-3">
+                        <label for="simpleinput" class="form-label">Total</label>
+                        <input type="text" class="form-control" id="total" name="total" readonly>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
     <div class="row">
         <div class="col-lg-6">
@@ -131,6 +142,12 @@
         });
 
     })
+    $('#jumlah').on('keyup', function () {
+        const jumlah = $('#jumlah').val();
+        const hargabeli = $('#harga_beli').val().replace(/[^\d]/g, '').slice(0, -2);
+        const total = parseInt(jumlah) * parseInt(hargabeli);
+        $('#total').val("Rp. " + total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
+    });
     $("#tambah-pembelian").submit(function (e) {
         e.preventDefault();
         var formData = new FormData(this);

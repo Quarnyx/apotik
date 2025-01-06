@@ -178,6 +178,8 @@
                                     $totalPurchase = 0;
                                     $qtySales = 0;
                                     $totalSales = 0;
+                                    $totalProfit = 0;
+                                    $profitTotal = 0;
                                     foreach ($rows as $row) {
                                         ?>
                                         <tr>
@@ -246,6 +248,7 @@
                                         <?php
                                         $qtyPurchase += $row['jumlah_beli'];
                                         $qtySales += $row['jumlah_jual'];
+                                        $profitTotal += $totalProfit;
                                         $totalPurchase += ($row['harga_beli'] * $row['jumlah_beli']);
                                         $totalSales += ($row['harga_jual'] * $row['jumlah_jual']);
                                     }
@@ -262,6 +265,9 @@
                                         <td></td>
                                         <td class="text-center">
                                             <?php echo "Rp. " . number_format($totalSales, 0, ',', '.'); ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo "Rp. " . number_format($profitTotal, 0, ',', '.'); ?>
                                         </td>
                                         <td class="text-center"><?php echo $qtyBefore; ?></td>
                                         <td class="text-center">

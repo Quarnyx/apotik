@@ -2,7 +2,7 @@
 
     <!-- start page title -->
     <?php
-    $maintitle = "Symox";
+    $maintitle = "Apotek Graha Medika";
     $title = 'Welcome !';
     include 'config.php';
     ?>
@@ -27,7 +27,7 @@
                             <li><i class="bx bx-polygon font-size-24"></i></li>
                         </ul>
                         <div class="main-wid position-relative">
-                            <h3 class="text-white">APOTIK GRAHA MEDIKA</h3>
+                            <h3 class="text-white">APOTEK GRAHA MEDIKA</h3>
                         </div>
                     </div>
                 </div>

@@ -73,7 +73,7 @@
                             <img src="assets/images/logo-sm.png" width="100px" alt="brand" />
                         </div>
                         <div class="ms-3">
-                            <h1>APOTIK</h1>
+                            <h1>APOTEK</h1>
                             <h1><b>GRAHA MEDIKA</b></h1>
                         </div>
                     </div>

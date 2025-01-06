@@ -8,7 +8,7 @@
                         <img src="assets/images/logo-sm.svg" alt="" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="assets/images/logo-sm.svg" alt="" height="22"> <span class="logo-txt">Apotik</span>
+                        <img src="assets/images/logo-sm.svg" alt="" height="22"> <span class="logo-txt">Apotek</span>
                     </span>
                 </a>
 
@@ -17,7 +17,7 @@
                         <img src="assets/images/logo-sm.svg" alt="" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="assets/images/logo-sm.svg" alt="" height="22"> <span class="logo-txt">Apotik</span>
+                        <img src="assets/images/logo-sm.svg" alt="" height="22"> <span class="logo-txt">Apotek</span>
                     </span>
                 </a>
 

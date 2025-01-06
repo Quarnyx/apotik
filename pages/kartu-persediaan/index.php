@@ -126,7 +126,7 @@
                                 <img src="assets/images/logo-sm.png" width="100px" alt="brand" />
                             </div>
                             <div class="ms-3">
-                                <h1>APOTIK</h1>
+                                <h1>APOTEK</h1>
                                 <h1><b>GRAHA MEDIKA</b></h1>
                             </div>
                         </div>
@@ -152,7 +152,7 @@
                                         <th rowspan="2" class="text-center align-content-center">Tanggal</th>
                                         <th rowspan="2" class="text-center align-content-center">Kode</th>
                                         <th colspan="3" class="text-center align-content-center">Masuk</th>
-                                        <th colspan="4" class="text-center align-content-center">Keluar</th>
+                                        <th colspan="5" class="text-center align-content-center">Keluar</th>
                                         <th colspan="2" class="text-center align-content-center">Persediaan</th>
                                     </tr>
                                     <tr>
@@ -163,6 +163,7 @@
                                         <th class="text-center">Qty</th>
                                         <th class="text-center">Harga</th>
                                         <th class="text-center">Total Harga</th>
+                                        <th class="text-center">Total Keuntungan</th>
                                         <th class="text-center">Qty</th>
                                         <th class="text-center">Total Harga</th>
                                     </tr>
@@ -217,6 +218,15 @@
                                             </td>
                                             <td class="text-center">
                                                 <?php echo !empty($row['harga_jual']) ? "Rp. " . number_format($row['harga_jual'] * $row['jumlah_jual'], 0, ',', '.') : 0; ?>
+                                            </td>
+                                            <td class="text-center">
+                                                <?php
+                                                $harga_beli = isset($rowpembelian['harga_beli']) ? $rowpembelian['harga_beli'] : 0;
+                                                $harga_jual = $row['harga_jual'];
+                                                $totalProfit = ($harga_jual - $harga_beli) * $row['jumlah_jual'];
+                                                echo "Rp. " . number_format($totalProfit, 0, ',', '.');
+                                                ?>
+
                                             </td>
                                             <td class="text-center">
                                                 <?php

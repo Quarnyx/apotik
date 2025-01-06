@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
 
-    <title><?php echo $language["Login"]; ?> | APOTIK GRAHA MEDIKA</title>
+    <title><?php echo $language["Login"]; ?> | APOTEK GRAHA MEDIKA</title>
 
     <?php include 'layouts/head.php'; ?>
 
@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
                                 <img src="assets/images/logo-sm.png" alt="" height="100" class="auth-logo-dark mx-auto">
-                                <h3 class="mt-3 text-uppercase">APOTIK GRAHA MEDIKA</h3>
+                                <h3 class="mt-3 text-uppercase">APOTEK GRAHA MEDIKA</h3>
                                 <p class="text-muted">Jl. Lkr. Barat Ps. Kendal pasar No.5 Blok H, Pekauman, Pakauman,
                                     Kec. Kendal, Kabupaten Kendal, Jawa Tengah 51314</p>
 
@@ -161,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="col-lg-12">
                     <div class="text-center text-muted p-4">
                         <p class="text-white-50">©
-                            <script>document.write(new Date().getFullYear())</script> Apotik <i
+                            <script>document.write(new Date().getFullYear())</script> Apotek <i
                                 class="mdi mdi-heart text-danger"></i> by Saya
                         </p>
                     </div>

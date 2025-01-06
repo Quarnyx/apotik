@@ -78,7 +78,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <h4 class="text-center mt-3 mb-3"><b>Apotik AA</b><br><b>LAPORAN SUPPLIER</b><br>Periode <?php
+                <h4 class="text-center mt-3 mb-3"><b>Apotek Graha Medika</b><br><b>LAPORAN SUPPLIER</b><br>Periode <?php
                 if (!empty($_GET["dari_tanggal"]) && !empty($_GET["sampai_tanggal"])) {
                     echo tanggal($_GET['dari_tanggal']) . " s.d " . tanggal($_GET['sampai_tanggal']);
                 } else {
